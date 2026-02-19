@@ -38,8 +38,15 @@ if (env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 
-// ─── Connect to Database (works for both local & serverless) ───
-connectDatabase();
+// ─── Ensure DB connection before every request (serverless safe) ───
+app.use(async (_req, _res, next) => {
+  try {
+    await connectDatabase();
+    next();
+  } catch (error) {
+    next(error);
+  }
+});
 
 // ─── API Routes ──────────────────────────────────────────
 app.use('/api', routes);
@@ -62,7 +69,7 @@ app.use(errorHandler);
 if (process.env.VERCEL !== '1') {
   app.listen(env.PORT, () => {
     console.log('\n═══════════════════════════════════════════');
-    console.log('  🚗 Action Auto CRM — API Server');
+    console.log('  Action Auto CRM — API Server');
     console.log('═══════════════════════════════════════════');
     console.log(`  Environment : ${env.NODE_ENV}`);
     console.log(`  Port        : ${env.PORT}`);
