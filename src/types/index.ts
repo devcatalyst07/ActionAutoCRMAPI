@@ -30,6 +30,10 @@ export interface IUser extends Document {
 // ─── Auth Types ──────────────────────────────────────────
 export interface AuthRequest extends Request {
   user?: IUser;
+  body: any;
+  query: any;
+  params: any;
+  headers: any;
 }
 
 export interface JwtPayload {
