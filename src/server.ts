@@ -38,7 +38,7 @@ if (env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 
-// ─── Ensure DB connection before every request (serverless safe) ───
+// ─── Ensure DB connection before every request ───────────
 app.use(async (_req, _res, next) => {
   try {
     await connectDatabase();
@@ -65,18 +65,16 @@ app.get('/', (_req, res) => {
 app.use(notFound);
 app.use(errorHandler);
 
-// ─── Server Startup (local dev only) ─────────────────────
-if (!process.env.VERCEL) {
-  app.listen(env.PORT, () => {
-    console.log('\n═══════════════════════════════════════════');
-    console.log('  Action Auto CRM — API Server');
-    console.log('═══════════════════════════════════════════');
-    console.log(`  Environment : ${env.NODE_ENV}`);
-    console.log(`  Port        : ${env.PORT}`);
-    console.log(`  API URL     : http://localhost:${env.PORT}/api`);
-    console.log(`  CORS Origin : ${env.CORS_ORIGIN}`);
-    console.log('═══════════════════════════════════════════\n');
-  });
-}
+// ─── Server Startup ──────────────────────────────────────
+app.listen(env.PORT, () => {
+  console.log('\n═══════════════════════════════════════════');
+  console.log('  Action Auto CRM — API Server');
+  console.log('═══════════════════════════════════════════');
+  console.log(`  Environment : ${env.NODE_ENV}`);
+  console.log(`  Port        : ${env.PORT}`);
+  console.log(`  API URL     : http://localhost:${env.PORT}/api`);
+  console.log(`  CORS Origin : ${env.CORS_ORIGIN}`);
+  console.log('═══════════════════════════════════════════\n');
+});
 
 export default app;
