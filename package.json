@@ -2,7 +2,7 @@
   "name": "action-auto-crm-backend",
   "version": "1.0.0",
   "description": "Action Auto CRM - Backend API Server",
-  "main": "dist/server.js",
+  "main": "src/server.ts",
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
     "build": "tsc",
@@ -20,9 +20,7 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.7.0",
     "morgan": "^1.10.0",
-    "sanitize-html": "^2.13.0"
-  },
-  "devDependencies": {
+    "sanitize-html": "^2.13.0",
     "@types/bcryptjs": "^2.4.6",
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
@@ -30,8 +28,10 @@
     "@types/morgan": "^1.9.9",
     "@types/node": "^22.7.0",
     "@types/sanitize-html": "^2.13.0",
-    "ts-node": "^10.9.2",
-    "ts-node-dev": "^2.0.0",
     "typescript": "^5.6.2"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.2",
+    "ts-node-dev": "^2.0.0"
   }
 }

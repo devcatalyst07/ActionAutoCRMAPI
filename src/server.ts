@@ -23,7 +23,7 @@ app.use(
 
 // Rate limiting
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
+  windowMs: 15 * 60 * 1000,
   max: 100,
   message: { success: false, message: 'Too many requests. Please try again later.' },
 });
@@ -37,6 +37,9 @@ app.use(express.urlencoded({ extended: true }));
 if (env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
+
+// ─── Connect to Database (works for both local & serverless) ───
+connectDatabase();
 
 // ─── API Routes ──────────────────────────────────────────
 app.use('/api', routes);
@@ -55,27 +58,18 @@ app.get('/', (_req, res) => {
 app.use(notFound);
 app.use(errorHandler);
 
-// ─── Server Startup ──────────────────────────────────────
-const startServer = async (): Promise<void> => {
-  try {
-    await connectDatabase();
-
-    app.listen(env.PORT, () => {
-      console.log('\n═══════════════════════════════════════════');
-      console.log('  🚗 Action Auto CRM — API Server');
-      console.log('═══════════════════════════════════════════');
-      console.log(`  Environment : ${env.NODE_ENV}`);
-      console.log(`  Port        : ${env.PORT}`);
-      console.log(`  API URL     : http://localhost:${env.PORT}/api`);
-      console.log(`  CORS Origin : ${env.CORS_ORIGIN}`);
-      console.log('═══════════════════════════════════════════\n');
-    });
-  } catch (error) {
-    console.error('❌ Failed to start server:', error);
-    process.exit(1);
-  }
-};
-
-startServer();
+// ─── Server Startup (local dev only, skipped on Vercel) ──
+if (process.env.VERCEL !== '1') {
+  app.listen(env.PORT, () => {
+    console.log('\n═══════════════════════════════════════════');
+    console.log('  🚗 Action Auto CRM — API Server');
+    console.log('═══════════════════════════════════════════');
+    console.log(`  Environment : ${env.NODE_ENV}`);
+    console.log(`  Port        : ${env.PORT}`);
+    console.log(`  API URL     : http://localhost:${env.PORT}/api`);
+    console.log(`  CORS Origin : ${env.CORS_ORIGIN}`);
+    console.log('═══════════════════════════════════════════\n');
+  });
+}
 
 export default app;
