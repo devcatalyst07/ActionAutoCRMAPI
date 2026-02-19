@@ -1,8 +1,8 @@
 import dotenv from 'dotenv';
 import path from 'path';
 
-// Load .env file for local dev (Vercel injects env vars automatically)
-if (process.env.VERCEL !== '1') {
+// Load .env file for local dev only (Vercel injects env vars automatically)
+if (!process.env.VERCEL) {
   dotenv.config({ path: path.resolve(process.cwd(), '.env') });
 }
 
@@ -27,7 +27,7 @@ const getEnvVar = (key: string, fallback?: string): string => {
 
 export const env: EnvConfig = {
   PORT: parseInt(getEnvVar('PORT', '5000'), 10),
-  NODE_ENV: getEnvVar('NODE_ENV', 'development'),
+  NODE_ENV: getEnvVar('NODE_ENV', 'production'),
   MONGODB_URI: getEnvVar('MONGODB_URI'),
   JWT_SECRET: getEnvVar('JWT_SECRET'),
   JWT_EXPIRES_IN: getEnvVar('JWT_EXPIRES_IN', '8h'),

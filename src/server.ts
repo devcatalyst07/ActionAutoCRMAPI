@@ -65,8 +65,8 @@ app.get('/', (_req, res) => {
 app.use(notFound);
 app.use(errorHandler);
 
-// ─── Server Startup (local dev only, skipped on Vercel) ──
-if (process.env.VERCEL !== '1') {
+// ─── Server Startup (local dev only) ─────────────────────
+if (!process.env.VERCEL) {
   app.listen(env.PORT, () => {
     console.log('\n═══════════════════════════════════════════');
     console.log('  Action Auto CRM — API Server');
